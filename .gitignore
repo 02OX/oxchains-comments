@@ -1,22 +1,32 @@
-# Compiled class file
-*.class
+target/
+!.mvn/wrapper/maven-wrapper.jar
 
-# Log file
-*.log
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
 
-# BlueJ files
-*.ctxt
+### BackEnd ###
+BackEnd/.idea
+BackEnd/*.iws
+BackEnd/*.iml
+BackEnd/*.ipr
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+BackEnd/comments-repo/target
+BackEnd/comments-repo/*.iml
 
-# Package Files #
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.rar
+### FrontEnd ###
+FrontEnd/.idea
+node_modules/
+FrontEnd/bundle.js
+FrontEnd/npm-debug.log
+.DS_Store
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
