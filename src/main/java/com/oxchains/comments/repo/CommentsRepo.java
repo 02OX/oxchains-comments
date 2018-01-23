@@ -3,6 +3,7 @@ package com.oxchains.comments.repo;
 import com.oxchains.comments.entity.Comments;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,10 +20,16 @@ public interface CommentsRepo extends CrudRepository<Comments, Long> {
     /**
      *
      */
-    List<Comments> findByAppKeyAndItemIdAndUserId(Integer appKey, Long itemId, Long userId);
+    List<Comments> findByAppKeyAndItemIdAndUserId(String appKey, Long itemId, Long userId);
 
     /**
      *
      */
-    Page<Comments> findByAppKeyAndItemId(Integer appKey,Long itemId, Pageable pageable);
+    Page<Comments> findByAppKeyAndItemId(String appKey,Long itemId, Pageable pageable);
+
+    /**
+     *
+     */
+    @Query(value = "select c from Comments  as c where (c.appKey = :appKey) and (c.itemId = :itemId) and (c.contents like :contents)")
+    List<Comments> findByAppKeyAndItemIdAndContents(String appKey, Long itemId, String contents);
 }

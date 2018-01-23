@@ -3,6 +3,7 @@ package com.oxchains.comments.service;
 import com.oxchains.comments.common.ConstEnum;
 import com.oxchains.comments.common.RestResp;
 import com.oxchains.comments.common.RestRespPage;
+import com.oxchains.comments.common.WordFilter;
 import com.oxchains.comments.entity.Comments;
 import com.oxchains.comments.repo.CommentsRepo;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,9 @@ public class CommentsService {
 
     public RestResp addComments(Comments comments){
         try{
-            comments.setAppKey(ConstEnum.AppKey.getKey(comments.getAppSign()));
+            if(WordFilter.isContainSensitiveWord(comments.getContents())){
+                return RestResp.fail("您输入的字符包含敏感词汇，请重新输入");
+            }
             comments.setCreateTime(new Date());
             comments = commentsRepo.save(comments);
             return RestResp.success("添加评论成功",comments);
@@ -51,12 +54,12 @@ public class CommentsService {
         }
     }
 
-    public RestResp getComments(String appSign, Long itemId, Integer pageSize, Integer pageNo){
+    public RestResp getComments(String appKey, Long itemId, Integer pageSize, Integer pageNo){
         try{
             pageSize = pageSize == null ? 10 :pageSize;
             pageNo = pageNo == null ? 1 :pageNo;
             Pageable pageable = new PageRequest((pageNo-1)*pageSize, pageSize);
-            Page<Comments> page = commentsRepo.findByAppKeyAndItemId(ConstEnum.AppKey.getKey(appSign),itemId,pageable);
+            Page<Comments> page = commentsRepo.findByAppKeyAndItemId(appKey,itemId,pageable);
             return RestRespPage.success(page.getContent(),page.getTotalElements());
         }catch (Exception e){
             log.error("获取数据出错",e);
@@ -64,9 +67,9 @@ public class CommentsService {
         }
     }
 
-    public RestResp getComments(String appSign, Long itemId, Long userId){
+    public RestResp getComments(String appKey, Long itemId, Long userId){
         try{
-            List<Comments> list = commentsRepo.findByAppKeyAndItemIdAndUserId(ConstEnum.AppKey.getKey(appSign),itemId,userId);
+            List<Comments> list = commentsRepo.findByAppKeyAndItemIdAndUserId(appKey,itemId,userId);
             if(null == list || list.size() <= 0){
                 return RestResp.success("您暂无评论数据",null);
             }

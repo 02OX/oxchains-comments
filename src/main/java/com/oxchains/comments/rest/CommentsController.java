@@ -20,13 +20,13 @@ public class CommentsController {
     private CommentsService commentsService;
 
     @GetMapping(value = "/list")
-    public RestResp getComments(String appSign, Long itemId, Integer pageSize, Integer pageNo){
-        return commentsService.getComments(appSign,itemId,pageSize,pageNo);
+    public RestResp getComments(String appKey, Long itemId, Integer pageSize, Integer pageNo){
+        return commentsService.getComments(appKey,itemId,pageSize,pageNo);
     }
 
     @GetMapping(value = "/list/{userId}")
-    public RestResp getComments(String appSign, Long itemId, @PathVariable Long userId){
-        return commentsService.getComments(appSign,itemId,userId);
+    public RestResp getComments(String appKey, Long itemId, @PathVariable Long userId){
+        return commentsService.getComments(appKey,itemId,userId);
     }
 
     @PostMapping(value = "/add")

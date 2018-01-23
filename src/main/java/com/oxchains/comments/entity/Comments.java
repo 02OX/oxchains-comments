@@ -16,7 +16,8 @@ public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer appKey;
+    @Column(length = 32)
+    private String appKey;
     private Long itemId;
     private Long userId;
     private Date createTime;
@@ -31,11 +32,11 @@ public class Comments {
         this.id = id;
     }
 
-    public Integer getAppKey() {
+    public String getAppKey() {
         return appKey;
     }
 
-    public void setAppKey(Integer appKey) {
+    public void setAppKey(String appKey) {
         this.appKey = appKey;
     }
 
@@ -95,14 +96,4 @@ public class Comments {
         this.avatar = avatar;
     }
 
-    @Transient
-   private String appSign;
-
-    public String getAppSign() {
-        return appSign;
-    }
-
-    public void setAppSign(String appSign) {
-        this.appSign = appSign;
-    }
 }
