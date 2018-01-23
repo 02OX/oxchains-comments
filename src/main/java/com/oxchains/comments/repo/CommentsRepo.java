@@ -25,7 +25,7 @@ public interface CommentsRepo extends CrudRepository<Comments, Long> {
     /**
      *
      */
-    Page<Comments> findByAppKeyAndItemId(String appKey,Long itemId, Pageable pageable);
+    Page<Comments> findByAppKeyAndItemIdOrderByCreateTimeDesc(String appKey,Long itemId, Pageable pageable);
 
     /**
      *

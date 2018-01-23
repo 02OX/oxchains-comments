@@ -162,7 +162,7 @@ public class WordFilter {
     }
 
     public static void main(String[] args) {
-        String txt = "阿扁推翻";
+        String txt = "XXX";
         boolean flag = WordFilter.isContainSensitiveWord(txt);
         System.out.println(flag);
         System.out.println(WordFilter.replaceSensitiveWord(txt));

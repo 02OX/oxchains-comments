@@ -59,8 +59,15 @@ public class CommentsService {
             pageSize = pageSize == null ? 10 :pageSize;
             pageNo = pageNo == null ? 1 :pageNo;
             Pageable pageable = new PageRequest((pageNo-1)*pageSize, pageSize);
-            Page<Comments> page = commentsRepo.findByAppKeyAndItemId(appKey,itemId,pageable);
-            return RestRespPage.success(page.getContent(),page.getTotalElements());
+            Page<Comments> page = commentsRepo.findByAppKeyAndItemIdOrderByCreateTimeDesc(appKey,itemId,pageable);
+            List<Comments> list = page.getContent();
+            for(int i = 0; i < list.size(); i++){
+                String contents = list.get(i).getContents();
+                if(WordFilter.isContainSensitiveWord(contents)){
+                    list.get(i).setContents(WordFilter.replaceSensitiveWord(contents));
+                }
+            }
+            return RestRespPage.success(list,page.getTotalElements());
         }catch (Exception e){
             log.error("获取数据出错",e);
             return RestResp.fail("获取数据出错");
