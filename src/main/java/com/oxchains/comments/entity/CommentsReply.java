@@ -10,19 +10,36 @@ import java.util.Date;
  * @desc:
  */
 @Entity
-@Table(name = "comments")
-public class Comments {
+@Table(name = "comments_reply")
+public class CommentsReply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 32)
-    private String appKey;
-    private Long itemId;
+     private Long commentsId;
     private Long userId;
+    private Long replyUserId;
     private Date createTime;
     @Column(length = 255)
     private String contents;
+
+    //@Transient
+    @Column(length = 32)
+    private String username;
+    @Transient
+    @Column(length = 32)
+    private String replyUsername;
+    //@Transient
+    @Column(length = 32)
+    private String avatar;
+    @Transient
+    @Column(length = 32)
+    private String ravatar;
+    @Transient
+    private Integer disapproval;
+    @Transient
+    private Integer approval;
+
 
     public Long getId() {
         return id;
@@ -32,20 +49,12 @@ public class Comments {
         this.id = id;
     }
 
-    public String getAppKey() {
-        return appKey;
+    public Long getCommentsId() {
+        return commentsId;
     }
 
-    public void setAppKey(String appKey) {
-        this.appKey = appKey;
-    }
-
-    public Long getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(Long itemId) {
-        this.itemId = itemId;
+    public void setCommentsId(Long commentsId) {
+        this.commentsId = commentsId;
     }
 
     public Long getUserId() {
@@ -54,6 +63,14 @@ public class Comments {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getReplyUserId() {
+        return replyUserId;
+    }
+
+    public void setReplyUserId(Long replyUserId) {
+        this.replyUserId = replyUserId;
     }
 
     public Date getCreateTime() {
@@ -72,20 +89,20 @@ public class Comments {
         this.contents = contents;
     }
 
-    //@Transient
-    @Column(length = 32)
-    private String username;
-
-    //@Transient
-    @Column(length = 32)
-    private String avatar;
-
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getReplyUsername() {
+        return replyUsername;
+    }
+
+    public void setReplyUsername(String replyUsername) {
+        this.replyUsername = replyUsername;
     }
 
     public String getAvatar() {
@@ -96,9 +113,13 @@ public class Comments {
         this.avatar = avatar;
     }
 
-    private Integer disapproval;
+    public String getRavatar() {
+        return ravatar;
+    }
 
-    private Integer approval;
+    public void setRavatar(String ravatar) {
+        this.ravatar = ravatar;
+    }
 
     public Integer getDisapproval() {
         return disapproval;

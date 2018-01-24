@@ -5,6 +5,10 @@ import com.oxchains.comments.common.RestResp;
 import com.oxchains.comments.common.RestRespPage;
 import com.oxchains.comments.common.WordFilter;
 import com.oxchains.comments.entity.Comments;
+import com.oxchains.comments.entity.CommentsFavor;
+import com.oxchains.comments.entity.CommentsReply;
+import com.oxchains.comments.repo.CommentsFavorRepo;
+import com.oxchains.comments.repo.CommentsReplyRepo;
 import com.oxchains.comments.repo.CommentsRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,6 +33,10 @@ public class CommentsService {
 
     @Resource
     private CommentsRepo commentsRepo;
+    @Resource
+    private CommentsReplyRepo commentsReplyRepo;
+    @Resource
+    private CommentsFavorRepo commentsFavorRepo;
 
     public RestResp addComments(Comments comments){
         try{
@@ -86,5 +94,55 @@ public class CommentsService {
             return RestResp.fail("获取数据出错");
         }
     }
+
+    /**
+     *  添加回复
+     */
+    public RestResp addCommentReplay(CommentsReply reply){
+        try {
+            reply.setCreateTime(new Date());
+            reply = commentsReplyRepo.save(reply);
+            return RestResp.success("回复评论成功",reply);
+        }catch (Exception e){
+            log.error("回复评论失败",e);
+        }
+        return RestResp.fail("回复评论失败");
+    }
+
+    /**
+     * 为评论或回复点赞
+     */
+    public RestResp addCommentFavor(CommentsFavor favor){
+        try {
+            CommentsFavor commentsFavor =
+                    commentsFavorRepo.findByAppKeyAndItemIdAndCommentsIdAndUserIdAndCommentsReplyId(favor.getAppKey(),
+                            favor.getItemId(),favor.getCommentsId(),favor.getUserId(),favor.getCommentsReplyId());
+            if(null != commentsFavor){
+                int type = favor.getType();
+                switch (type){
+                    case 1://评论
+                        //Comments comments = commentsRepo.findOne(commentsFavor.getCommentsId());
+                        //if(commentsFavor.getFavor())
+                        break;
+                    case 2://回复
+                        break;
+                    default:
+                        break;
+                }
+
+                commentsFavor.setFavor(favor.getFavor());
+                favor = commentsFavorRepo.save(commentsFavor);
+            }else {
+                favor.setCreateTime(new Date());
+                favor = commentsFavorRepo.save(favor);
+            }
+
+            return RestResp.success("成功",favor);
+        }catch (Exception e){
+            log.error("回复评论失败",e);
+        }
+        return RestResp.fail();
+    }
+
 
 }

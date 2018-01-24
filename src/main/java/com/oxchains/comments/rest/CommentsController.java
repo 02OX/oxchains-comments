@@ -2,6 +2,8 @@ package com.oxchains.comments.rest;
 
 import com.oxchains.comments.common.RestResp;
 import com.oxchains.comments.entity.Comments;
+import com.oxchains.comments.entity.CommentsFavor;
+import com.oxchains.comments.entity.CommentsReply;
 import com.oxchains.comments.service.CommentsService;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,5 +39,15 @@ public class CommentsController {
     @DeleteMapping(value = "/delete/{commentsId}")
     public RestResp deleteComments(@PathVariable Long commentsId){
         return commentsService.deleteComments(commentsId);
+    }
+
+    @PostMapping(value = "/reply")
+    public RestResp addCommentsReply(CommentsReply reply){
+        return commentsService.addCommentReplay(reply);
+    }
+
+    @PostMapping(value = "/favor")
+    public RestResp addCommentsFavor(CommentsFavor favor){
+        return commentsService.addCommentFavor(favor);
     }
 }

@@ -51,4 +51,20 @@ public interface   ConstEnum {
             this.value = value;
         }
     }
+
+    enum FavorType implements ConstEnum{
+        COMMENT(1),REPLAY(2);
+        private int type;
+        FavorType(int type){
+            this.type = type;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+    }
 }
